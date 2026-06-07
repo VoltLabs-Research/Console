@@ -10,7 +10,7 @@ import Button from '@/shared/presentation/primitives/Button';
 import UserBadge from '@/modules/auth/components/UserBadge';
 import { usePageTitle } from '@/shared/presentation/hooks/use-page-title';
 import { checkEmail, login, signup, ApiError } from '@/lib/api';
-import { setToken } from '@/lib/token';
+import { setToken, setRefreshToken } from '@/lib/token';
 import './SignInPage.css';
 
 type Step = 'email' | 'password' | 'register';
@@ -40,8 +40,9 @@ const SignInPage = () => {
         setShowPassword(false);
     };
 
-    const finalize = (accessToken: string): void => {
-        setToken(accessToken);
+    const finalize = (tokens: { accessToken: string; refreshToken: string }): void => {
+        setToken(tokens.accessToken);
+        setRefreshToken(tokens.refreshToken);
         const next = searchParams.get('next');
         navigate(next ? decodeURIComponent(next) : '/device', { replace: true });
     };
@@ -58,13 +59,13 @@ const SignInPage = () => {
 
     const handlePasswordStep = async (): Promise<void> => {
         const tokens = await login(email, password);
-        finalize(tokens.accessToken);
+        finalize(tokens);
     };
 
     const handleRegisterStep = async (): Promise<void> => {
         await signup(email, username, password);
         const tokens = await login(email, password);
-        finalize(tokens.accessToken);
+        finalize(tokens);
     };
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {

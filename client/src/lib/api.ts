@@ -1,4 +1,5 @@
 import { consoleUrl } from '@/lib/config';
+import { getRefreshToken, setToken, clearToken } from '@/lib/token';
 
 export class ApiError extends Error {
     status: number;
@@ -29,23 +30,54 @@ interface RequestOptions {
     token?: string;
 }
 
-const request = async (path: string, options: RequestOptions = {}): Promise<Response> => {
-    const headers: Record<string, string> = {};
-
-    if (options.body !== undefined) {
-        headers['Content-Type'] = 'application/json';
+const refreshAccessToken = async (): Promise<string | null> => {
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) {
+        return null;
     }
-    if (options.token) {
-        headers['Authorization'] = `Bearer ${options.token}`;
-    }
-
-    let response: Response;
     try {
-        response = await fetch(`${consoleUrl}${path}`, {
+        const response = await fetch(`${consoleUrl}/auth/refresh`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refreshToken })
+        });
+        if (!response.ok) {
+            clearToken();
+            return null;
+        }
+        const data = (await response.json()) as { accessToken: string };
+        setToken(data.accessToken);
+        return data.accessToken;
+    } catch {
+        return null;
+    }
+};
+
+const request = async (path: string, options: RequestOptions = {}): Promise<Response> => {
+    const send = (token?: string): Promise<Response> => {
+        const headers: Record<string, string> = {};
+        if (options.body !== undefined) {
+            headers['Content-Type'] = 'application/json';
+        }
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+        return fetch(`${consoleUrl}${path}`, {
             method: options.method ?? 'GET',
             headers,
             body: options.body !== undefined ? JSON.stringify(options.body) : undefined
         });
+    };
+
+    let response: Response;
+    try {
+        response = await send(options.token);
+        if (response.status === 401 && options.token) {
+            const refreshed = await refreshAccessToken();
+            if (refreshed) {
+                response = await send(refreshed);
+            }
+        }
     } catch {
         throw new ApiError(0, 'Network error. Please check your connection and try again.');
     }

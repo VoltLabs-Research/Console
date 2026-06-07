@@ -1,0 +1,21 @@
+.device-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background-color: var(--color-bg);
+}
+
+.device-column {
+    width: 100%;
+    max-width: 26rem;
+}
+
+.device-actions {
+    width: 100%;
+}
+
+.device-identity {
+    font-family: var(--font-mono);
+}

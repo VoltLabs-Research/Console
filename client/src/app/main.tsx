@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client';
 import App from '@/app/App';
 import AppToaster from '@/shared/presentation/components/AppToaster';
 
+import '@voltstack/bravais/styles.css';
+import '@voltstack/bravais/components.css';
 import '@/shared/presentation/assets/stylesheets/fonts.css';
-import '@/shared/presentation/assets/stylesheets/theme.css';
 import '@/shared/presentation/assets/stylesheets/base.css';
-import '@/shared/presentation/assets/stylesheets/general.css';
 
 const container = document.getElementById('root');
 if (!container) {

@@ -3,10 +3,7 @@ import type { FormEvent } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { sileo } from 'sileo';
 import { Eye, EyeOff } from 'lucide-react';
-import Heading from '@/shared/presentation/primitives/Heading';
-import Text from '@/shared/presentation/primitives/Text';
-import Stack from '@/shared/presentation/primitives/Stack';
-import Button from '@/shared/presentation/primitives/Button';
+import { Heading, Text, Stack, Button, TextInput } from '@voltstack/bravais';
 import UserBadge from '@/modules/auth/components/UserBadge';
 import { usePageTitle } from '@/shared/presentation/hooks/use-page-title';
 import { checkEmail, login, signup, ApiError } from '@/lib/api';
@@ -93,27 +90,28 @@ const SignInPage = () => {
 
     const { title, subtitle } = STEP_COPY[step];
     const passwordInput = (
-        <div className='auth-input-wrap'>
-            <input
-                className='auth-input auth-input--with-button'
-                type={showPassword ? 'text' : 'password'}
-                autoComplete={step === 'register' ? 'new-password' : 'current-password'}
-                required
-                autoFocus
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder='Password'
-                aria-label='Password'
-            />
-            <button
-                type='button'
-                className='auth-input-toggle'
-                onClick={() => setShowPassword((current) => !current)}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-            >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-            </button>
-        </div>
+        <TextInput
+            type={showPassword ? 'text' : 'password'}
+            autoComplete={step === 'register' ? 'new-password' : 'current-password'}
+            required
+            autoFocus
+            fullWidth
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder='Password'
+            aria-label='Password'
+            rightIcon={
+                <button
+                    type='button'
+                    className='auth-input-toggle'
+                    tabIndex={-1}
+                    onClick={() => setShowPassword((current) => !current)}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+            }
+        />
     );
 
     return (
@@ -134,12 +132,12 @@ const SignInPage = () => {
 
                 <Stack gap='075'>
                     {step === 'email' && (
-                        <input
-                            className='auth-input'
+                        <TextInput
                             type='email'
                             autoComplete='email'
                             autoFocus
                             required
+                            fullWidth
                             value={email}
                             onChange={(event) => setEmail(event.target.value)}
                             placeholder='you@example.com'
@@ -148,12 +146,12 @@ const SignInPage = () => {
                     )}
 
                     {step === 'register' && (
-                        <input
-                            className='auth-input'
+                        <TextInput
                             type='text'
                             autoComplete='username'
                             autoFocus
                             required
+                            fullWidth
                             pattern='[a-z0-9][a-z0-9-]*'
                             minLength={2}
                             maxLength={39}

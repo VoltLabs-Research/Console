@@ -7,7 +7,7 @@ import DevicePage from '@/modules/device/components/DevicePage';
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: <Navigate to='/device' replace />
+        element: <Navigate to='/dashboard' replace />
     },
     {
         path: '/login',

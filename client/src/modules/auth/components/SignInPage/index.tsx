@@ -41,7 +41,7 @@ const SignInPage = () => {
         setToken(tokens.accessToken);
         setRefreshToken(tokens.refreshToken);
         const next = searchParams.get('next');
-        navigate(next ? decodeURIComponent(next) : '/device', { replace: true });
+        navigate(next ? decodeURIComponent(next) : '/dashboard', { replace: true });
     };
 
     const reportError = (error: unknown, fallbackTitle: string): void => {

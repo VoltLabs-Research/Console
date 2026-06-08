@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import NotFoundPage from '@/app/routes/NotFoundPage';
+import DashboardPage from '@/app/routes/DashboardPage';
 import SignInPage from '@/modules/auth/components/SignInPage';
 import DevicePage from '@/modules/device/components/DevicePage';
 
@@ -11,6 +12,10 @@ export const router = createBrowserRouter([
     {
         path: '/login',
         element: <SignInPage />
+    },
+    {
+        path: '/dashboard',
+        element: <DashboardPage />
     },
     {
         path: '/device',

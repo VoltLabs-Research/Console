@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import { jwtVerify } from 'jose';
 import { JWT_ALG, JWT_AUDIENCE, JWT_ISSUER, getPublicKey } from '../../config/crypto.js';
 import { HttpError } from '../HttpError.js';
+import { extractBearer } from '../extractBearer.js';
 
 export interface AuthenticatedAccount {
     accountId: string;
@@ -14,14 +15,6 @@ declare module 'express-serve-static-core' {
         account?: AuthenticatedAccount;
     }
 }
-
-const extractBearer = (header: string | undefined): string | null => {
-    if (!header) {
-        return null;
-    }
-    const match = /^Bearer\s+(.+)$/i.exec(header.trim());
-    return match && match[1] ? match[1].trim() : null;
-};
 
 export const requireJwt = async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
     try {

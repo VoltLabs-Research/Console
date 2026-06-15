@@ -32,15 +32,12 @@ export class TokenController {
     ) {}
 
     createHandler = async (req: Request, res: Response): Promise<void> => {
-        if (!req.account) {
-            throw HttpError.unauthorized();
-        }
         const parsed = createSchema.safeParse(req.body);
         if (!parsed.success) {
             throw HttpError.badRequest('invalid token payload', { issues: parsed.error.issues });
         }
         const result = await this.create.execute({
-            accountId: req.account.accountId,
+            accountId: req.account!.accountId,
             label: parsed.data.label,
             scopes: parsed.data.scopes,
             scopeMask: parsed.data.scopeMask,
@@ -50,22 +47,12 @@ export class TokenController {
     };
 
     listHandler = async (req: Request, res: Response): Promise<void> => {
-        if (!req.account) {
-            throw HttpError.unauthorized();
-        }
-        const tokens = await this.list.execute(req.account.accountId);
+        const tokens = await this.list.execute(req.account!.accountId);
         res.status(200).json(tokens);
     };
 
     revokeHandler = async (req: Request, res: Response): Promise<void> => {
-        if (!req.account) {
-            throw HttpError.unauthorized();
-        }
-        const id = req.params.id;
-        if (!id) {
-            throw HttpError.badRequest('missing token id');
-        }
-        await this.revoke.execute(req.account.accountId, id);
+        await this.revoke.execute(req.account!.accountId, req.params.id!);
         res.status(204).end();
     };
 

@@ -93,26 +93,20 @@ export class SessionController {
     };
 
     approveDeviceHandler = async (req: Request, res: Response): Promise<void> => {
-        if (!req.account) {
-            throw HttpError.unauthorized();
-        }
         const parsed = deviceDecisionSchema.safeParse(req.body);
         if (!parsed.success) {
             throw HttpError.badRequest('invalid device approval payload', { issues: parsed.error.issues });
         }
-        await this.approveDevice.execute(parsed.data.userCode, req.account.accountId, 'approve');
+        await this.approveDevice.execute(parsed.data.userCode, req.account!.accountId, 'approve');
         res.status(200).json({ approved: true });
     };
 
     denyDeviceHandler = async (req: Request, res: Response): Promise<void> => {
-        if (!req.account) {
-            throw HttpError.unauthorized();
-        }
         const parsed = deviceDecisionSchema.safeParse(req.body);
         if (!parsed.success) {
             throw HttpError.badRequest('invalid device decision payload', { issues: parsed.error.issues });
         }
-        await this.approveDevice.execute(parsed.data.userCode, req.account.accountId, 'deny');
+        await this.approveDevice.execute(parsed.data.userCode, req.account!.accountId, 'deny');
         res.status(200).json({ approved: false });
     };
 }

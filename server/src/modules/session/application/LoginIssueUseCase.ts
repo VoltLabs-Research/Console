@@ -1,9 +1,7 @@
 import { ACCESS_TOKEN_TTL_SECONDS, signAccessToken } from '../../../core/config/crypto.js';
 import { Account } from '../../account/domain/Account.js';
 import { SessionRepository } from '../infrastructure/db/SessionRepository.js';
-import { generateRefreshToken, hashRefreshToken, lookupForToken } from './tokenHashing.js';
-
-const REFRESH_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+import { generateRefreshToken, hashRefreshToken, lookupForToken, REFRESH_TOKEN_TTL_MS } from './tokenHashing.js';
 
 export interface LoginIssueOutput {
     accessToken: string;

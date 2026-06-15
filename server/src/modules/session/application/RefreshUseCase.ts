@@ -2,9 +2,7 @@ import { ACCESS_TOKEN_TTL_SECONDS, signAccessToken } from '../../../core/config/
 import { HttpError } from '../../../core/http/HttpError.js';
 import { AccountRepository } from '../../account/infrastructure/db/AccountRepository.js';
 import { SessionRepository } from '../infrastructure/db/SessionRepository.js';
-import { generateRefreshToken, hashRefreshToken, lookupForToken, verifyRefreshToken } from './tokenHashing.js';
-
-const REFRESH_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+import { generateRefreshToken, hashRefreshToken, lookupForToken, verifyRefreshToken, REFRESH_TOKEN_TTL_MS } from './tokenHashing.js';
 
 export interface RefreshOutput {
     accessToken: string;

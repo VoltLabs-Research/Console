@@ -3,6 +3,8 @@ import argon2 from 'argon2';
 
 const REFRESH_TOKEN_BYTES = 32;
 
+export const REFRESH_TOKEN_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+
 export const generateRefreshToken = (): string => {
     return randomBytes(REFRESH_TOKEN_BYTES).toString('base64url');
 };

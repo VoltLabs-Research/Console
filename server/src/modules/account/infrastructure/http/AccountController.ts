@@ -36,10 +36,7 @@ export class AccountController {
     };
 
     whoamiHandler = async (req: Request, res: Response): Promise<void> => {
-        if (!req.account) {
-            throw HttpError.unauthorized();
-        }
-        const profile = await this.whoami.execute(req.account.accountId);
+        const profile = await this.whoami.execute(req.account!.accountId);
         res.status(200).json(profile);
     };
 

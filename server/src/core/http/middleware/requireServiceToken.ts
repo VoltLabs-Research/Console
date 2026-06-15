@@ -2,14 +2,7 @@ import { timingSafeEqual } from 'node:crypto';
 import type { NextFunction, Request, Response } from 'express';
 import { env } from '../../config/env.js';
 import { HttpError } from '../HttpError.js';
-
-const extractBearer = (header: string | undefined): string | null => {
-    if (!header) {
-        return null;
-    }
-    const match = /^Bearer\s+(.+)$/i.exec(header.trim());
-    return match && match[1] ? match[1].trim() : null;
-};
+import { extractBearer } from '../extractBearer.js';
 
 const constantTimeEquals = (a: string, b: string): boolean => {
     const aBuf = Buffer.from(a, 'utf8');

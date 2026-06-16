@@ -90,7 +90,6 @@ const request = async (path: string, options: RequestOptions = {}): Promise<Resp
                 message = (data.message as string) || (data.error as string) || message;
             }
         } catch {
-            // non-JSON error body, keep the default message
         }
         throw new ApiError(response.status, message);
     }

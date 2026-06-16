@@ -9,8 +9,6 @@ const envSchema = z.object({
     JWT_PUBLIC_KEY_PEM: z.string().min(1).transform(pemTransform),
     JWT_KID: z.string().min(1),
     REGISTRY_SERVICE_TOKEN: z.string().min(1),
-    // Public base URL of the console web UI, embedded into the device-code
-    // verification URI shown to the CLI. Override per environment.
     CONSOLE_WEB_URL: z.string().url().default('https://console.voltcloud.dev'),
     CORS_ORIGINS: z
         .string()

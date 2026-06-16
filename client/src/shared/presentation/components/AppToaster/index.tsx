@@ -1,7 +1,6 @@
 import { Toaster } from 'sileo';
 import { useEffect, useRef } from 'react';
 
-// @types/react 18.3.x predates the native popover API; declare the attribute.
 declare module 'react' {
     interface HTMLAttributes<T> {
         popover?: 'auto' | 'manual';
